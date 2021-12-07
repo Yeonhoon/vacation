@@ -4,7 +4,7 @@
       <v-flex>
         <calendar></calendar>
       </v-flex>
-      <v-flex>
+      <v-flex mt-15>
         <requets></requets>
       </v-flex>
     </v-layout>
@@ -18,7 +18,6 @@ export default {
     calendar,
     requets
   },
-
-    
+   
 }
 </script>
