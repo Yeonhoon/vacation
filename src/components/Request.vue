@@ -76,32 +76,6 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        <!-- <div
-         
-        >
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="val[0]"
-                readonly
-                filled
-                rounded
-                label="일자"
-              >
-              </v-text-field>  
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="val[1]"
-                readonly
-                filled
-                rounded
-                label="종류"
-              >
-              </v-text-field>  
-            </v-col>
-          </v-row>
-        </div> -->
         <v-divider></v-divider>
         <v-textarea
           class="mt-5"
