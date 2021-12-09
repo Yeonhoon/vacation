@@ -101,22 +101,36 @@ import {mapActions} from 'vuex'
     methods:{
       ...mapActions(['logIn']),
       async login(){
-        const User = new FormData();
-        User.append('username', this.form.uname);
-        User.append('password', this.form.upw);
+        // const User = new FormData();
+        // User.append('username', this.form.uname);
+        // User.append('password', this.form.upw);
+        const id = this.form.uname;
+        const pw = this.form.upw;
         this.$refs.observer.validate()
         .then(val=>{
           if(val){
-              console.log(User)
-            this.logIn(User)
-            .then(()=>{
-              this.$router.push('/')
-              this.isLoginError=false
+            this.$http.post('/api/login', {id,pw},{'Content-Type':'application-json'})
+            .then(res=>{
+              const user = res.data.user;
+              if (user){
+                this.$store.commit('setUser',user);
+                this.$router.push({name:'Home'});
+              } else {
+                alert(res.data.message);
+              }
             })
             .catch(err=>{
-              this.isLoginError=true
-              console.log(err)
+              console.error(err);
             })
+            // this.logIn(User)
+            // .then(()=>{
+            //   this.$router.push('/')
+            //   this.isLoginError=false
+            // })
+            // .catch(err=>{
+            //   this.isLoginError=true
+            //   console.log(err)
+            // })
           }
         }
         )
