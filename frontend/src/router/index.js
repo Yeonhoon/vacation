@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-
+import state from '../store/index'
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,20 +29,33 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Signup.vue')
   },
   {
-    path:'/calendar',
-    name: 'Calendar',
+    path:'/request',
+    name: 'Request',
     component: () => import('../views/Form.vue')
   },
   {
-    path:'/movies',
-    name: 'Test',
-    component: () => import('../views/Test.vue')
+    path:'/board',
+    name: 'Dashboard',
+    component: () => import('../views/Dashboard.vue')
   }
 ]
 
 const router = new VueRouter({
   routes,
-  mode: 'history'
+  mode: 'history',
+  base: process.env.BASE_URL
 })
+
+router.beforeEach((to,from,next)=>{
+    if (to.matched.some(record => record.meta.requireAuth)){
+      if(state.getters.isAuthenticated){
+        next();
+        return
+      }
+      next('/signin');
+    } else {
+      next();
+    }
+  })
 
 export default router

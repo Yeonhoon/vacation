@@ -6,8 +6,20 @@ import vuetify from './plugins/vuetify'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-Vue.prototype.$http = axios;
+axios.interceptors.response.use(undefined, function(error){
+    if (error){
+      const originalRequest = error.config;
+      if(error.response.status == 401 && !originalRequest._retry){
+        originalRequest._retry = true;
+        store.dispatch('logOut');
+        return router.push('/login')
+      }
+    }
+  })
 
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:5000';
 new Vue({
   store,
   router,

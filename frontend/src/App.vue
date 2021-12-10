@@ -5,19 +5,26 @@
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="/aseets/snubh_round.jpg"
-          transition="scale-transition"
-          width="40"
-        />
-      </div>
 
       <v-spacer></v-spacer>
-
+      <div class="d-flex align-center">
+        <v-btn
+         text
+         exact
+         primary
+         :to="{name:'Home'}"
+        >
+          Home
+        </v-btn>
+          <v-btn
+            v-if="isLogin"
+            text
+            exact
+            @click="logout"
+          >로그아웃</v-btn>
+      </div>
+      
+    
     </v-app-bar>
 
     <v-main>
@@ -34,5 +41,16 @@ export default {
   data: () => ({
     //
   }),
+  computed:{
+    isLogin(){
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods:{
+    async logout(){
+      await this.$store.dispatch('logOut');
+      this.$router.push('/')
+    }
+  },
 };
 </script>

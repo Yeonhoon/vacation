@@ -12,7 +12,7 @@ const getters = {
 const actions = {
     async register({dispatch}, form) {
       console.log(form)
-        await axios.post('/api/register', form);
+        await axios.post('/register', form);
       
       let UserForm = new FormData();
       UserForm.append('username', form.uname);
@@ -20,7 +20,7 @@ const actions = {
       await dispatch('logIn',UserForm);
     },
     async logIn({dispatch}, user) {
-      await axios.post('/api/login', user);
+      await axios.post('/login', user);
       await dispatch('viewMe');
     },
     async viewMe({commit}) {

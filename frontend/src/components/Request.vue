@@ -72,8 +72,25 @@
             :key="key"
           >
             <v-list-item-content>
-              <v-list-item-title>{{val[0]}}:<strong>{{ val[1]}}</strong></v-list-item-title>  
+              <v-list-item-title>{{val[0]}}:<strong>{{ val[1]}}</strong></v-list-item-title>
+                  
             </v-list-item-content>
+            <v-radio-group
+              v-if="val[1]==='반차'"
+              v-model="halfVacTime"
+              row
+            >
+              <v-radio
+                label="오전"
+                value="am"
+            >
+              </v-radio>
+              <v-radio
+                label="오후"
+                value="pm"
+              >
+              </v-radio>
+            </v-radio-group>
           </v-list-item>
         </v-list>
         <v-divider></v-divider>
@@ -102,6 +119,9 @@
         </v-btn>
         </v-card-actions>
       </v-card>
+      <v-btn
+        :to="{name:'Dashboard'}"
+      >결과확인</v-btn>
       <v-snackbar
         v-model="snackbar"
         multi-line
@@ -122,7 +142,7 @@
 
 </template>
 <script>
-import {mapMutations} from 'vuex'
+import { mapMutations, mapActions} from 'vuex'
 export default {
   data: () =>({
     date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
@@ -130,68 +150,69 @@ export default {
     dateDict: {},
     dateArr: [],
     modal: false,
-    reason: null,
-    
+    reason: '연차',
+    halfItems:['오전','오후'],
+    halfVacTime: null,
     snackbar:false,
     snackbarMsg: null,
     snackbarColor:null,
     timeout:1500,
     }),
   methods: {
-  oneClick(date){
-    var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
-    var indexOfDate = parseInt(date.split('-')[2])
-    var newDateForm = new Date(date).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}) +" "+ new Date(date).toLocaleDateString('ko-KR',{weekday:'short'})
-    console.log(newDateForm)
+    oneClick(date){
+      var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
+      var indexOfDate = parseInt(date.split('-')[2])
+      var newDateForm = new Date(date).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}) +" "+ new Date(date).toLocaleDateString('ko-KR',{weekday:'short'})
   //   var status = allDates[indexOfDate-1].parentNode.style['background-color']s
-    let pos = this.dateArr.indexOf(newDateForm)
+      let pos = this.dateArr.indexOf(newDateForm)
   //   this.dateDict[date] = new Array()
-    if (pos === -1) {
-      this.dateArr.push(newDateForm)
-      this.dateDict[newDateForm] = '연차'
-      allDates[indexOfDate-1].parentNode.style="background-color: #c8cafa !important"
-    } 
-    else if (this.dateDict[newDateForm]==='연차') {
-      delete this.dateDict[newDateForm]
-      this.dateDict[newDateForm] = '반차'
-      allDates[indexOfDate-1].parentNode.style="background-color: #faceca !important" 
-    }
-    else if (this.dateDict[newDateForm]==='반차') {
-      let idx = this.dateArr.indexOf(newDateForm)
-      this.dateArr.splice(idx,1)
-      delete this.dateDict[newDateForm] 
-      allDates[indexOfDate-1].parentNode.style="background-color: #ffffff"
-    }
-  console.log(this.dateDict)
+      if (pos === -1) {
+        this.dateArr.push(newDateForm)
+        this.dateDict[newDateForm] = '연차'
+        allDates[indexOfDate-1].parentNode.style="background-color: #c8cafa !important"
+      } 
+      else if (this.dateDict[newDateForm]==='연차') {
+        delete this.dateDict[newDateForm]
+        this.dateDict[newDateForm] = '반차'
+        allDates[indexOfDate-1].parentNode.style="background-color: #faceca !important" 
+      }
+      else if (this.dateDict[newDateForm]==='반차') {
+        let idx = this.dateArr.indexOf(newDateForm)
+        this.dateArr.splice(idx,1)
+        delete this.dateDict[newDateForm] 
+        allDates[indexOfDate-1].parentNode.style="background-color: #ffffff"
+      }
+//   console.log(this.dateDict)
 
-  },
-  dblClick (date) {
-    console.log(date)
-  //   var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
-  //   var indexOfDate = parseInt(date.split('-')[2])
-    
-  //   var status = allDates[indexOfDate-1].parentNode.style['background-color']
-  //   console.log(status)
-  //   status.length !== 0 || status === "red"  
-  //   ? allDates[indexOfDate-1].parentNode.style="background-color: red !important"
-  //   : allDates[indexOfDate-1].parentNode.style="background-color: green !important"
-  },
-  removeDate(v){
-    let idx = this.dateArr.indexOf(v)
-    this.dateArr.splice(idx, 1)
-    delete this.dateDict[v]
-    var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
-    allDates.forEach(x=>{
-      x.parentNode.style="background-color: null"
-    })
-    this.$forceUpdate()
-  },
+    },
+    dblClick (date) {
+        console.log(date)
+    //   var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
+    //   var indexOfDate = parseInt(date.split('-')[2])
+        
+    //   var status = allDates[indexOfDate-1].parentNode.style['background-color']
+    //   console.log(status)
+    //   status.length !== 0 || status === "red"  
+    //   ? allDates[indexOfDate-1].parentNode.style="background-color: red !important"
+    //   : allDates[indexOfDate-1].parentNode.style="background-color: green !important"
+    },
+    removeDate(v){
+        let idx = this.dateArr.indexOf(v)
+        this.dateArr.splice(idx, 1)
+        delete this.dateDict[v]
+        var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
+        allDates.forEach(x=>{
+        x.parentNode.style="background-color: null"
+        })
+        this.$forceUpdate()
+    },
 
   setColor(date){
     if (this.dateDict[date]==='연차') return "#c8cafa"
     else if (this.dateDict[date]==='반차') return'#faceca'
     else return "#fffff"
   },
+
   cancel(){
     this.dateArr=[],
     this.dateDict={}
@@ -201,20 +222,48 @@ export default {
     })
     this.modal=false
   },
+
   ...mapMutations(['addVactions']),
+  ...mapActions(['submitVacation']),
   submit(){
     if (Object.keys(this.dateDict).length === 0){
       this.snackbar = true
       this.snackbarColor = "error"
       this.snackbarMsg = "날짜를 선택해주세요."
     } else {
-      this.snackbar = true
-      this.snackbarColor = "success"
-      this.snackbarMsg = "휴가 신청이 완료되었습니다."
+        let submitForm=[]
+         for (var i=0; i<Object.keys(this.dateDict).length;i++){
+            if (Object.values(this.dateDict)[i]==='반차'){
+              submitForm.push ({
+                'vdate':Object.keys(this.dateDict)[i],
+                'vtype':Object.values(this.dateDict)[i],
+                'vhour':this.halfVacTime
+              })
+              console.log(this.halfVacTime)
+             } else {
+                submitForm.push ({
+                  'vdate':Object.keys(this.dateDict)[i],
+                  'vtype':Object.values(this.dateDict)[i],
+                  'vhour':''
+              })  
+             }
+         }
+         this.submitVacation(submitForm)
+        // console.log(submitForm)
+        this.snackbar = true
+        this.snackbarColor = "success"
+        this.snackbarMsg = "휴가 신청이 완료되었습니다."
+        this.dateArr=[]
+        this.dateDict={}
+        this.modal=false
+        var allDates = document.querySelectorAll(".v-date-picker-table .v-btn .v-btn__content");
+        allDates.forEach(x=>{
+            x.parentNode.style="background-color: #ffffff"
+        })
     }
   },
   allowedDates: val => new Date(val).toLocaleDateString('ko-KR',{weekday:'short'}) !== '토' &&
         new Date(val).toLocaleDateString('ko-KR',{weekday:'short'}) !== '일'
-  }
+  },
 }
 </script>

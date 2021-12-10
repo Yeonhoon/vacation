@@ -11,9 +11,9 @@
             >
               이메일 혹은 비밀번호가 틀립니다!
             </v-alert>
-            <v-card class="elevation-12">
-              <v-toolbar dark>
-                <v-toolbar-title>로그인</v-toolbar-title>
+            <v-card class="elevation-12" max-width=400>
+              <v-toolbar color="primary" dark>
+                <v-toolbar-title class="text --white">로그인</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <validation-observer
@@ -101,35 +101,35 @@ import {mapActions} from 'vuex'
     methods:{
       ...mapActions(['logIn']),
       async login(){
-        // const User = new FormData();
-        // User.append('username', this.form.uname);
-        // User.append('password', this.form.upw);
-        const id = this.form.uname;
-        const pw = this.form.upw;
+        const User = new FormData();
+        User.append('username', this.form.uname);
+        User.append('password', this.form.upw);
         this.$refs.observer.validate()
         .then(val=>{
-          if(val){
-            this.$http.post('/api/login', {id,pw},{'Content-Type':'application-json'})
-            .then(res=>{
-              const user = res.data.user;
-              if (user){
-                this.$store.commit('setUser',user);
-                this.$router.push({name:'Home'});
-              } else {
-                alert(res.data.message);
-              }
+            if(val){
+                this.logIn(User)
+            .then(()=>{
+                this.$router.push('/')
+                this.isLoginError=false
             })
             .catch(err=>{
-              console.error(err);
+                this.isLoginError=true
+                console.log(err)
             })
-            // this.logIn(User)
-            // .then(()=>{
-            //   this.$router.push('/')
-            //   this.isLoginError=false
+                // const id = this.form.uname;
+                // const pw = this.form.upw;
+            // this.$http.post('/api/login', {id,pw},{'Content-Type':'application-json'})
+            // .then(res=>{
+            //   const user = res.data.user;
+            //   if (user){
+            //     this.$store.commit('setUser',user);
+            //     this.$router.push({name:'Home'});
+            //   } else {
+            //     alert(res.data.message);
+            //   }
             // })
             // .catch(err=>{
-            //   this.isLoginError=true
-            //   console.log(err)
+            //   console.error(err);
             // })
           }
         }

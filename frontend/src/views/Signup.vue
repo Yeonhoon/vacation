@@ -13,7 +13,7 @@
             </v-alert>
             
             <v-card class="elevation-6" ref="form" width="100%">
-              <v-toolbar dark>
+              <v-toolbar dark color="primary">
                 <v-toolbar-title>회원가입</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>

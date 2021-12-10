@@ -142,6 +142,12 @@
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
     }),
+    props:{
+      records:{
+        type:Array,
+        default:null,
+      }
+    },
     mounted () {
       this.$refs.calendar.checkChange()
     },
@@ -185,8 +191,13 @@
         const max = new Date(`${end.date}T23:59:59`)
         const days = (max.getTime() - min.getTime()) / 86400000
         console.log(days)
+        const eventCount = this.records.length
         // const eventCount = this.rnd(days, days + 20)
-
+        for (let i=0; i<eventCount; i++){
+            events.push({
+                name:this.records[i].userid,
+            })
+        }
         // for (let i = 0; i < eventCount; i++) {
         //   const allDay = this.rnd(0, 3) === 0
         //   const firstTimestamp = this.rnd(min.getTime(), max.getTime())
@@ -202,8 +213,9 @@
         //     timed: !allDay,
         //   })
         // }
+        
 
-        this.events = events
+        // this.events = events
       },
       rnd (a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a
