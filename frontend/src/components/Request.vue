@@ -1,6 +1,6 @@
 <template>
-  <v-row justify="center">
-  <v-card class="elevation-1" width="400">
+  <v-row justify="center" class="mt-10">
+  <v-card class="elevation-1 mt-10" width="400">
     <v-toolbar color="primary" class="white--text">
       <v-toolbar-title>
         <strong>휴가 신청</strong>
@@ -119,9 +119,15 @@
         </v-btn>
         </v-card-actions>
       </v-card>
-      <v-btn
-        :to="{name:'Dashboard'}"
-      >결과확인</v-btn>
+      <div>
+        <v-btn
+          :to="{name:'Dashboard'}"
+        >
+          결과확인
+        </v-btn>
+
+      </div>
+      
       <v-snackbar
         v-model="snackbar"
         multi-line

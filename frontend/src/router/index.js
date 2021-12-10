@@ -31,12 +31,14 @@ const routes = [
   {
     path:'/request',
     name: 'Request',
-    component: () => import('../views/Form.vue')
+    component: () => import('../views/Form.vue'),
+    meta:{requiresAuth: true}
   },
   {
     path:'/board',
     name: 'Dashboard',
-    component: () => import('../views/Dashboard.vue')
+    component: () => import('../views/Dashboard.vue'),
+    meta:{requiresAuth: true}
   }
 ]
 

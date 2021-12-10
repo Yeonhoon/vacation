@@ -17,6 +17,7 @@ axios.interceptors.response.use(undefined, function(error){
     }
   })
 
+//   export NODE_OPTIONS=--openssl-legacy-provider
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://localhost:5000';

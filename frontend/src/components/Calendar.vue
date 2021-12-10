@@ -192,30 +192,35 @@
         const days = (max.getTime() - min.getTime()) / 86400000
         console.log(days)
         const eventCount = this.records.length
-        // const eventCount = this.rnd(days, days + 20)
         for (let i=0; i<eventCount; i++){
+          if (this.records[i].vtype==="반차"){
+            if (this.records[i].vhour==='am'){
+              events.push({
+                name:this.records[i].name + " " + this.records[i].vtype,
+                start: this.records[i].vymd + " 08:00",
+                end: this.records[i].vymd + " 12:00",
+                color: this.colors[this.rnd(0, this.colors.length - 1)],
+              })
+            } else {
+              events.push({
+                name:this.records[i].name + " " + this.records[i].vtype,
+                start: this.records[i].vymd + " 12:00",
+                end: this.records[i].vymd + " 18:00",
+                color: this.colors[this.rnd(0, this.colors.length - 1)],
+              })
+            }
+          } else {
             events.push({
-                name:this.records[i].userid,
+                name:this.records[i].name + " " + this.records[i].vtype,
+                start: this.records[i].vymd,
+                color: this.colors[this.rnd(0, this.colors.length - 1)],
             })
+
+          }
         }
-        // for (let i = 0; i < eventCount; i++) {
-        //   const allDay = this.rnd(0, 3) === 0
-        //   const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-        //   const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        //   const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        //   const second = new Date(first.getTime() + secondTimestamp)
-
-        //   events.push({
-        //     name: this.names[this.rnd(0, this.names.length - 1)],
-        //     start: first,
-        //     end: second,
-        //     color: this.colors[this.rnd(0, this.colors.length - 1)],
-        //     timed: !allDay,
-        //   })
-        // }
         
-
-        // this.events = events
+        console.log(events)
+        this.events = events
       },
       rnd (a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a

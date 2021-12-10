@@ -9,7 +9,7 @@
               v-if="isLoginError"
               type="error" 
             >
-              이메일 혹은 비밀번호가 틀립니다!
+              아이디 혹은 비밀번호가 틀립니다!
             </v-alert>
             <v-card class="elevation-12" max-width=400>
               <v-toolbar color="primary" dark>
@@ -108,14 +108,14 @@ import {mapActions} from 'vuex'
         .then(val=>{
             if(val){
                 this.logIn(User)
-            .then(()=>{
-                this.$router.push('/')
-                this.isLoginError=false
-            })
-            .catch(err=>{
-                this.isLoginError=true
-                console.log(err)
-            })
+                .then(()=>{
+                    this.$router.push('/')
+                    this.isLoginError=false
+                })
+                .catch(err=>{
+                    this.isLoginError=true
+                    console.log(err)
+                })
                 // const id = this.form.uname;
                 // const pw = this.form.upw;
             // this.$http.post('/api/login', {id,pw},{'Content-Type':'application-json'})

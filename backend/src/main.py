@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.routes import users
 from src.routes import vacations
 
-app = FastAPI()
+app = FastAPI(title="Vacation Manager")
 
 origins = [
     "http://localhost:8080"

@@ -37,15 +37,19 @@ async def submitVacations(request:List[Vacation], current_user:ShowUser=Depends(
         if not data:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail="휴가 신청 불가.")
+
+
         db.add(data)
         db.commit()
         db.refresh(data)
+
+    
 
     return "휴가 신청 완료."
 
 @router.get('/vacations')
 async def getVacations(db:Session=Depends(connect_db), current_user:ShowUser=Depends(get_current_user)):
-    rawData = db.query(Vacations)\
+    rawData = db.query(Vacations,Users.name)\
                 .filter(Vacations.userid==current_user.rid)
                 #   .join(Users, Users.rid == Vacations.userid)\
     vacations = pd.read_sql(rawData.statement, rawData.session.bind)

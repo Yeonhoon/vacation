@@ -16,12 +16,33 @@
         >
           Home
         </v-btn>
+        <v-btn
+
+          v-if="isLogin"
+          text
+          primary
+          exact
+          :to="{name:'Request'}"
+        >
+          휴가신청
+        </v-btn>
+        <v-btn
+          v-if="isLogin"
+          text
+          primary
+          exact
+          :to="{name:'Dashboard'}"
+        >
+          마이페이지
+        </v-btn>
           <v-btn
             v-if="isLogin"
             text
             exact
             @click="logout"
-          >로그아웃</v-btn>
+          >
+          로그아웃
+        </v-btn>
       </div>
       
     
