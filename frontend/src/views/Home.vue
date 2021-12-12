@@ -36,17 +36,31 @@
         </div>
       </v-col>
     </v-row>
+    <Progress
+      strokeColor="#646ce3"
+      :transitionDuration="2000"
+      :radius="55"
+      :strokeWidth="10"
+      :value="leftVac"
+    >
+      <div class>14 / 15일</div>
+      <template v-slot:footer>
+        <div class="ml-5">
+          <strong>남은 휴가일</strong>
+        </div>
+      </template>
+    </Progress>
   </v-container>
 </template>
 
 <script>
-
+import Progress from "easy-circular-progress";
   export default {
     name: 'Home',
-
     components: {
-    //   Logo,
+      Progress
     },
+
     computed:{
       isLogin(){
         return this.$store.getters.isAuthenticated;
@@ -56,7 +70,7 @@
       }
     },
     data:()=>({
-      
+      leftVac: 12/15*100
     })
   }
 </script>
