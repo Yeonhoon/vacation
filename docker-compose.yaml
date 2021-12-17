@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./app/backend
+    ports:
+      - 5050:5050
+    # networks:
+    #   diargym:
+    #     ipv4_address: 172.29.0.4
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - SECRET_KEY= "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+    volumes:
+      - ./app/backend:/app
+    command: bash -c "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 5050 --reload"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./app/frontend
+    volumes:
+      - './app/frontend:/app'
+      - '/app/node_modules'
+    ports:
+      - 8080:8080
+
+  db:
+    image: postgres:13
+    # ports:
+    #   - 5432:5432
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+volumes:
+  postgres_data: {}
