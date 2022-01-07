@@ -17,9 +17,17 @@
     </v-layout>
     <v-row v-if="isLogin" align="center" justify="center">
       <v-col>
-        <div class="text-center">
+        <div class="text-center" v-if="currentUser==='drofthee99'">
+          <div class="my-2" >
+            <v-btn :to="{name:'Dashboard'}" plain color='red lighten-1' rounded large width="200"><strong>휴가 관리</strong></v-btn>
+          </div>  
+        </div>
+        <div class="text-center" v-else>
+          <div class='my-2'>
+            <v-btn :to="{name:'Request'}" color='red lighten-1' dark rounded large width="200"><strong>휴가 신청</strong></v-btn>
+          </div>
           <div class="my-2">
-            <v-btn :to="{name:'Request'}" plain color='red lighten-1' rounded large width="200"><strong>휴가 신청</strong></v-btn>
+            <v-btn :to="{name:'Dashboard'}" color='blue lighten-1' dark rounded large width="200"><strong>마이 페이지</strong></v-btn>
           </div>
         </div>
       </v-col>
@@ -36,29 +44,20 @@
         </div>
       </v-col>
     </v-row>
-    <Progress
-      strokeColor="#646ce3"
-      :transitionDuration="2000"
-      :radius="55"
-      :strokeWidth="10"
-      :value="leftVac"
-    >
-      <div class>14 / 15일</div>
-      <template v-slot:footer>
-        <div class="ml-5">
-          <strong>남은 휴가일</strong>
-        </div>
-      </template>
-    </Progress>
   </v-container>
 </template>
 
 <script>
-import Progress from "easy-circular-progress";
+
   export default {
     name: 'Home',
     components: {
-      Progress
+    },
+    async created(){
+      if (isLogin()){
+        this.retreiveVac()
+
+      }
     },
 
     computed:{
@@ -69,8 +68,11 @@ import Progress from "easy-circular-progress";
         return this.$store.getters.stateUser.rid;
       }
     },
-    data:()=>({
-      leftVac: 12/15*100
-    })
+
+    methods:{
+    async retreiveVac(){
+      this.$store.dispatch('loadVacationList')
+    }
+  }
   }
 </script>

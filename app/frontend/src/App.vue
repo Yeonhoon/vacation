@@ -5,7 +5,6 @@
       color="primary"
       dark
     >
-
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
         <v-btn
@@ -17,7 +16,6 @@
           Home
         </v-btn>
         <v-btn
-
           v-if="isLogin"
           text
           primary
@@ -42,6 +40,14 @@
             @click="logout"
           >
           로그아웃
+        </v-btn>
+         <v-btn
+          text
+          exact
+          primary
+          :to="{name:'Contact'}"
+        >
+          Contact
         </v-btn>
       </div>
       

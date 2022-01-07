@@ -26,7 +26,7 @@ class Users(Base):
     name = Column(String, nullable=False)
     email = Column(String, nullable=False)
     pw = Column(String, nullable=False)
-    nov = Column(Numeric, default=15)
+    nov = Column(Float, default=15)
 
     vacations = relationship('Vacations', back_populates='users')
 

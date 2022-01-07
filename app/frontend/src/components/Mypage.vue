@@ -56,10 +56,10 @@ export default {
     headers:[
       { text:'이름',align:'center',sortable:true, value:'name', width:"100px"},
       { text: '사번',align:'center', value: 'userid', width:"100px" },
-      { text: '신청일자', value: 'vdate', width:"100px", align:'center'},
+      { text: '신청일자', value: 'vdate', width:"120px", align:'center'},
       { text: '휴가 종류', value: 'vtype', width:"100px", align:'center'},
       { text: '연구책임자', value: 'boss', width:"100px", align:'center' },
-      { text: '승인여부', value:'vcheck', sortable:false, width:"100px" },
+    //   { text: '승인여부', value:'vcheck', sortable:false, width:"100px" },
    ],
   }),
 }

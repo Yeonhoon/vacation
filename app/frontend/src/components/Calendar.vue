@@ -111,6 +111,7 @@
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
+              <v-spacer></v-spacer>
               <v-btn
                 text
                 color="secondary"

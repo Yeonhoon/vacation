@@ -38,21 +38,44 @@ async def submitVacations(request:List[Vacation], current_user:ShowUser=Depends(
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail="휴가 신청 불가.")
 
+        print(data.vtype)
+        user = db.query(Users).filter(Users.rid == current_user.rid).first()
+        if user.nov == 0:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="남은 휴가일 없음.")
+        
+        else:
+            db.add(data)
+            if data.vtype=='반차':
+                minus = float(0.5)
+            else:
+                minus = float(1.0)
+            # 휴가일수 일일 차감
+            user.nov = user.nov - minus
+            db.commit()
+            db.refresh(data)
 
-        db.add(data)
-        db.commit()
-        db.refresh(data)
-
+        
     
 
     return "휴가 신청 완료."
 
 @router.get('/vacations')
 async def getVacations(db:Session=Depends(connect_db), current_user:ShowUser=Depends(get_current_user)):
-    rawData = db.query(Vacations,Users.name)\
-                .filter(Vacations.userid==current_user.rid)
-                #   .join(Users, Users.rid == Vacations.userid)\
-    vacations = pd.read_sql(rawData.statement, rawData.session.bind)
+    if current_user.rid=="drofthee99":
+        rawData = db.query(Vacations,Users.name,Users.nov)\
+                    .join(Users,Users.rid == Vacations.userid)\
+                    .filter(Vacations.userid!=current_user.rid)
+        vacations = pd.DataFrame(rawData)
+        print(vacations)
+
+        # vacations = pd.read_sql(rawData.statement, rawData.session.bind)
+    else:
+        rawData = db.query(Vacations,Users.name, Users.nov)\
+                .filter(Vacations.userid==current_user.rid)\
+                .join(Users, Users.rid == Vacations.userid)
+        vacations = pd.read_sql(rawData.statement, rawData.session.bind)
+        print(vacations)
     dateArr = []
     for i in range(vacations.shape[0]):
         # print(vacations.iloc[i,:]['vdate'])

@@ -45,7 +45,8 @@
                         :type="showpw ?'text' :'password'"
                         :append-icon="showpw ? 'mdi-eye' :'mdi-eye-off'"
                         :error-messages="errors"
-                        @click:append="showpw = !showpw"  
+                        @click:append="showpw = !showpw"
+                        @keyup.enter="login"
                       ></v-text-field>
                     </validation-provider>
                   </v-form>

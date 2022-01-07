@@ -119,15 +119,6 @@
         </v-btn>
         </v-card-actions>
       </v-card>
-      <div>
-        <v-btn
-          :to="{name:'Dashboard'}"
-        >
-          결과확인
-        </v-btn>
-
-      </div>
-      
       <v-snackbar
         v-model="snackbar"
         multi-line
@@ -158,7 +149,7 @@ export default {
     modal: false,
     reason: '연차',
     halfItems:['오전','오후'],
-    halfVacTime: null,
+    halfVacTime: 'am',
     snackbar:false,
     snackbarMsg: null,
     snackbarColor:null,
